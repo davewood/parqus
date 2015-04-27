@@ -58,6 +58,7 @@ my %keywords = ( title => 1, name => 1 );
 sub _build_parser {
     my ($self) = @_;
 
+    # TODO: make keywords attr work with Regexp::Grammar
     #my %keywords = %{ $self->keywords };
     return qr/
                     <timeout: 3>
