@@ -70,13 +70,13 @@ sub _build_parser {
                     <rule: query>
                         <item>|<item><query>
                     <rule: item>
-                        <keyvalue>|<word>|<word= quote>
-                    <rule: word>
-                        <MATCH= ([\w]+)>
+                        <keyvalue>|<value>
                     <rule: keyvalue>
                         <key>:<value>?
                     <rule: key>
                         <%keywords>
+                    <rule: word>
+                        <MATCH= (\w+)>
                     <rule: value>
                         <str= quote>|<str= word>
                     <token: delim>
@@ -103,8 +103,8 @@ sub process {
                   : '';
                 push( @{ $keywords{$key} }, $value );
             }
-            elsif ( exists $item->{item}{word} ) {
-                push( @words, $item->{item}{word} );
+            elsif ( exists $item->{item}{value}{str} ) {
+                push( @words, $item->{item}{value}{str} );
             }
             else {
                 push( @errors, "Parse Error: neither word nor keyvalue" );
