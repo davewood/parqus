@@ -26,7 +26,9 @@ Parqus (PArse QUery String) parses a search-engine like string into a perl struc
 
 =head1 SEE ALSO
 
-L<Regexp::Grammars>
+L<Regexp::Grammars>,
+L<Search::Query>,
+L<Search::Query::Dialect::DBIxClass>
 
 =cut
 
