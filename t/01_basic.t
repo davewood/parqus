@@ -35,6 +35,16 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
     is_deeply( $res, { keywords => { name => ['foo bar'] } }, 'parse keyword with quoted value.' );
 }
 {
+    my $res = $parser->process('name:"foo bar" name:baz meh "mii"');
+    my $expected = {
+        words => [ 'meh' , 'mii' ],
+        keywords => {
+            name => ['foo bar', 'baz'],
+        },
+    };
+    is_deeply( $res, $expected, 'mix words and keywords.' );
+}
+{
     my $res = $parser->process('&&');
     ok( exists $res->{errors}, 'unquoted special chars causes error.');
     is( $res->{errors}[0], 'Parse Error: Invalid search query.', 'found parse error.' );
