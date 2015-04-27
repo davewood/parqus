@@ -53,14 +53,12 @@ has parser => (
           unless ref $_[0] eq 'Regexp';
     },
 );
-my %keywords = ( title => 1, name => 1 );
 
 sub _build_parser {
     my ($self) = @_;
 
-    # TODO: make keywords attr work with Regexp::Grammar
-    #my %keywords = %{ $self->keywords };
-    return qr/
+    my %keywords = %{ $self->keywords };
+    return eval q{qr/
                     <timeout: 3>
                     ^
                     \s*
@@ -83,8 +81,7 @@ sub _build_parser {
                         ['"]
                     <token: quote>
                         <ldelim=delim><MATCH= (.*?)><rdelim=\_ldelim>
-                 /xms;
-
+                 /xms};
 }
 
 sub process {
