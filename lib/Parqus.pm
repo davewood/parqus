@@ -89,8 +89,6 @@ sub _build_parser {
 sub process {
     my ( $self, $query ) = @_;
 
-    my $parser = $self->parser;
-
     my %keywords = ();
     my @words    = ();
     my @errors   = ();
