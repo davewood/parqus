@@ -25,6 +25,11 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
     is_deeply( $res, { words => ['foo'] }, 'parse single word.' );
 }
 {
+    my $res = $parser->process(' foo ');
+    ok(!exists $res->{errors}, 'no error');
+    is_deeply( $res, { words => ['foo'] }, 'parse single word with leading and trailing whitespace.' );
+}
+{
     my $res = $parser->process('title: foo');
     ok(!exists $res->{errors}, 'no error');
     is_deeply( $res, { keywords => { title => ['foo'] } }, 'parse single keyword.' );
