@@ -75,14 +75,10 @@ sub _build_parser {
                         <key>:<value>?
                     <rule: key>
                         <%keywords>
-                    <rule: word>
-                        <MATCH= (\w+)>
-                    <rule: value>
-                        <str= quote>|<str= word>
-                    <token: delim>
+                    <rule: delim>
                         ['"]
-                    <token: quote>
-                        <ldelim=delim><MATCH= (.*?)><rdelim=\_ldelim>
+                    <rule: value>
+                        <MATCH= (\w+)>|<ldelim=delim><MATCH= (.*?)><rdelim=\_ldelim>
                  /xms};
 }
 
@@ -98,12 +94,12 @@ sub process {
                 my $key = $item->{item}{keyvalue}{key};
                 my $value =
                   exists $item->{item}{keyvalue}{value}
-                  ? $item->{item}{keyvalue}{value}{str}
+                  ? $item->{item}{keyvalue}{value}
                   : '';
                 push( @{ $keywords{$key} }, $value );
             }
-            elsif ( exists $item->{item}{value}{str} ) {
-                push( @words, $item->{item}{value}{str} );
+            elsif ( exists $item->{item}{value} ) {
+                push( @words, $item->{item}{value} );
             }
             else {
                 push( @errors, "Parse Error: neither word nor keyvalue" );
