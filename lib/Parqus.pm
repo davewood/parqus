@@ -61,7 +61,7 @@ sub _build_parser {
 
     my %keywords = %{ $self->keywords };
     return eval q{qr/
-                    <timeout: 3>
+                    <timeout: 2>
                     ^
                     \s*
                     <[query]>*

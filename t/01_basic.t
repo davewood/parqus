@@ -35,6 +35,16 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
     is_deeply( $res, { keywords => { title => ['foo'] } }, 'parse single keyword.' );
 }
 {
+    my $res = $parser->process('nokeyword: foo');
+    ok(exists $res->{errors}, 'invalid keyword.');
+    is( $res->{errors}[0], 'Parse Error: Invalid search query.', 'found parse error.' );
+}
+{
+    my $res = $parser->process('"nokeyword: foo"');
+    ok(!exists $res->{errors}, 'no error');
+    is_deeply( $res, { words => ['nokeyword: foo'] }, 'parse quoted invalid keyword.' );
+}
+{
     my $res = $parser->process('"foo bar"');
     ok(!exists $res->{errors}, 'no error');
     is_deeply( $res, { words => ['foo bar'] }, 'parse quoted words.' );
