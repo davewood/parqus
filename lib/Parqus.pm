@@ -35,8 +35,8 @@ L<Search::Query::Dialect::DBIxClass>
 has keywords => (
     is  => 'lazy',
     isa => sub {
-        "$_[0] is not a HashRef!"
-          unless ref $_[0] eq 'HASH';
+        die "$_[0] is not a HashRef!"
+          if ref $_[0] ne 'HASH';
     },
     coerce => sub {
         if ( ref $_[0] eq 'ARRAY' ) {
