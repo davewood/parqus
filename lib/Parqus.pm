@@ -9,7 +9,9 @@ use Regexp::Grammars;
 
     use Parqus;
     my $parser = Parqus->new( keywords => [ qw/name title/ ] );
-    my $res    = $parser->process('title:"bar baz" foo title: meh');
+    my $res;
+
+    $res = $parser->process('title:"bar baz" foo title: meh');
     # {
     #   words    => ['foo'],
     #   keywords => {
@@ -20,6 +22,27 @@ use Regexp::Grammars;
     #               },
     # }
 
+    $res = $parser->process('title:"bar baz" title: meh');
+    # {
+    #   keywords => {
+    #                 title => [
+    #                            'bar baz',
+    #                            'meh',
+    #                          ]
+    #               },
+    # }
+
+    $res = $parser->process('foo bar baz');
+    # {
+    #   words => ['foo', 'bar', 'baz'],
+    # }
+
+    $res = $parser->process('tag: inactive');
+    # {
+    #   errors => {
+    #               'Parse Error: Invalid search query.'
+    #             },
+    # }
 =head1 DESCRIPTION
 
 Parqus (PArse QUery String) parses a search-engine like string into a perl structure
