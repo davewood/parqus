@@ -6,15 +6,22 @@ use Test::Warnings;
 
 BEGIN { use_ok('Parqus'); }
 
+sub _parse_error {
+    my ($res, $expected, $msg) = @_;
+    ok( exists $res->{errors}, 'result has errors.');
+    is( $res->{errors}[0], $expected, $msg );
+}
+
 {
     my $parser = Parqus->new();
-    ok( $parser, 'got a Parqus instance without passing keywords.' );
+    ok( $parser, 'got a Parqus instance without passing keywords option.' );
     my $res = $parser->process('foo');
     ok(!exists $res->{errors}, 'no error');
 }
 
+
 my $parser = Parqus->new( keywords => [qw/ title name /] );
-ok( $parser, 'got a Parqus instance with passing keywords.' );
+ok( $parser, 'got a Parqus instance with passing keywords option.' );
 
 {
     my $res = $parser->process('');
@@ -28,8 +35,7 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
 }
 {
     my $res = $parser->process('fo=o');
-    ok(exists $res->{errors}, 'invalid keyword.');
-    is( $res->{errors}[0], 'Parse Error: Invalid search query.', 'found parse error.' );
+    _parse_error($res, 'Parse Error: Invalid search query.', 'found parse error.');
 }
 {
     my $parser = Parqus->new( value_regex => qr/[\w=-]+/ );
@@ -50,8 +56,7 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
 }
 {
     my $res = $parser->process('nokeyword: foo');
-    ok(exists $res->{errors}, 'invalid keyword.');
-    is( $res->{errors}[0], 'Parse Error: Invalid search query.', 'found parse error.' );
+    _parse_error($res, 'Parse Error: Invalid search query.', 'found parse error.');
 }
 {
     my $res = $parser->process('"nokeyword: foo"');
@@ -86,8 +91,7 @@ ok( $parser, 'got a Parqus instance with passing keywords.' );
 }
 {
     my $res = $parser->process('&');
-    ok( exists $res->{errors}, 'unquoted special chars causes error.');
-    is( $res->{errors}[0], 'Parse Error: Invalid search query.', 'found parse error.' );
+    _parse_error($res, 'Parse Error: Invalid search query.', 'found parse error.');
 }
 
 done_testing();

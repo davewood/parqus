@@ -1,4 +1,5 @@
 package Parqus;
+
 use Moo;
 use namespace::autoclean;
 use Regexp::Grammars;
