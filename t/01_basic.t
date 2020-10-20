@@ -90,4 +90,16 @@ ok( $parser, 'got a Parqus instance with passing keywords option.' );
     _parse_error($res, 'Parse Error: Invalid search query.', 'found parse error.');
 }
 
+{
+    my $parser = Parqus->new(
+        keywords => [qw/ title name /],
+        string_delimiters => ['"!']
+    );
+    ok( $parser, 'got a Parqus instance with passing string_delimiters and keywords option.' );
+
+    {
+        my $res = _parse_ok($parser, q/!foo bar!/);
+        is_deeply( $res, { words => ['foo bar'] }, 'found quoted words.' );
+    }
+}
 done_testing();

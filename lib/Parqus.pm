@@ -101,6 +101,15 @@ has value_regex => (
     default => sub { qr![\w-]+!xms },
 );
 
+has string_delimiters => (
+    is  => 'lazy',
+    isa => sub {
+        die "$_[0] is not a ArrayRef!"
+          if ref $_[0] ne 'ARRAY';
+    },
+    default => sub { [qw/'"/] }
+);
+
 has parser => (
     is       => 'lazy',
     init_arg => undef,
@@ -113,8 +122,9 @@ has parser => (
 sub _build_parser {
     my ($self) = @_;
 
-    my %keywords    = %{ $self->keywords };
-    my $value_regex = $self->value_regex;
+    my %keywords          = %{ $self->keywords };
+    my $value_regex       = $self->value_regex;
+    my @string_delimiters = @{ $self->string_delimiters };
     return eval q{qr/
                     <timeout: 2>
                     ^
@@ -131,7 +141,7 @@ sub _build_parser {
                     <rule: key>
                         <%keywords>
                     <rule: delim>
-                        ['"]
+                        [@string_delimiters]
                     <rule: value>
                         <MATCH= ($value_regex)>|<ldelim=delim><MATCH= (.*?)><rdelim=\_ldelim>
                  /xms};
