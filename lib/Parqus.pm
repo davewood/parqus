@@ -65,6 +65,10 @@ the list of keywords you want to recognise.
 
 regular expression to capture words. (default: C<[qr![\w-]+!xms]>)
 
+=head2 string_delimiters
+
+array of characters used to delimit strings. (default: C<['"]>)
+
 =head1 SEE ALSO
 
 L<Regexp::Grammars>,
