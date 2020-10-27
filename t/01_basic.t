@@ -49,8 +49,12 @@ sub _parse_ok {
     $res = _parse_ok($parser, ' foo ');
     is_deeply( $res, { words => ['foo'] }, 'parse single word with leading and trailing whitespace.' );
 
+    my $expected = { keywords => { title => ['foo'] } };
+    $res = _parse_ok($parser, 'title:foo');
+    is_deeply( $res, $expected, 'parse single keyword without space after colon.' );
+
     $res = _parse_ok($parser, 'title: foo');
-    is_deeply( $res, { keywords => { title => ['foo'] } }, 'parse single keyword.' );
+    is_deeply( $res, $expected, 'parse single keyword with space after colon.' );
 
     $res = $parser->process('nokeyword: foo');
     _parse_error($res, 'Parse Error: Invalid search query.');

@@ -132,16 +132,16 @@ sub _build_parser {
     return eval q{qr/
                     <timeout: 2>
                     ^
-                    \s*
+                    <.ws>
                     <[query]>*
-                    \s*
+                    <.ws>
                     $
                     <rule: query>
                         <item>|<item><query>
                     <rule: item>
                         <keyvalue>|<value>
                     <rule: keyvalue>
-                        <key>:<value>?
+                        <key>:<.ws><value>?
                     <rule: key>
                         <%keywords>
                     <rule: delim>
