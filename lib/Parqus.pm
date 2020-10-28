@@ -99,7 +99,7 @@ has keywords => (
 has value_regex => (
     is  => 'lazy',
     isa => sub {
-        "$_[0] is not a Regexp!"
+        die"$_[0] is not a Regexp!"
           unless ref $_[0] eq 'Regexp';
     },
     default => sub { qr![\w-]+!xms },
@@ -118,7 +118,7 @@ has parser => (
     is       => 'lazy',
     init_arg => undef,
     isa      => sub {
-        "$_[0] is not a Regexp!"
+        die "$_[0] is not a Regexp!"
           unless ref $_[0] eq 'Regexp';
     },
 );
