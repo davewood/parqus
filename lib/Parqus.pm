@@ -129,7 +129,9 @@ sub _build_parser {
     my %keywords          = %{ $self->keywords };
     my $value_regex       = $self->value_regex;
     my @string_delimiters = @{ $self->string_delimiters };
-    return eval q{qr/
+    return eval q{
+                  use re 'eval'; # for perl <= 5.16.3
+                  qr/
                     <timeout: 2>
                     ^
                     <.ws>
